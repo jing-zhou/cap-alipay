@@ -35,17 +35,17 @@ repositories {
     jcenter()
     mavenCentral()
     flatDir {
-        dirs 'libs'
+        dirs 'src/main/libs'
     }
 }
 
 
 dependencies {
-    compile(name:'alipaySdk-15.6.8-20191021122514', ext:'aar')
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':capacitor-android')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compile(name:'alipaySdk-15.6.8-20191021122514', ext:'aar')
 }
 
