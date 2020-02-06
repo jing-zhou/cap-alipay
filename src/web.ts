@@ -9,7 +9,7 @@ export class AlipayWeb extends WebPlugin implements AlipayPlugin {
     });
   }
 
-  async echo(options: { value: string }): Promise<{value: string}> {
+  async pay(options: { bill: string }): Promise<{}> {
     console.log('ECHO', options);
     return options;
   }

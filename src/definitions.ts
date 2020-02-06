@@ -5,5 +5,5 @@ declare module "@capacitor/core" {
 }
 
 export interface AlipayPlugin {
-  echo(options: { value: string }): Promise<{value: string}>;
+  pay(options: { bill: string }): Promise<{}>;
 }
