@@ -16,7 +16,6 @@ import java.util.function.Supplier;
 public class Alipay extends Plugin {
     private static final String bill = "bill";
     private static final String status = "resultStatus";
-    private static final String memo = "memo";
     private static final String success = "9000";
     private static final String nobill = "Must provide the bill string";
 
@@ -44,9 +43,10 @@ public class Alipay extends Plugin {
                     ret.put(e.getKey(), e.getValue());
                 }
                 call.resolve(ret);
+                return;
             }
 
-            call.reject(res.get(memo));
+            call.reject(state);
         } catch (ExecutionException | InterruptedException e) {
             call.reject(e.getMessage());
 
