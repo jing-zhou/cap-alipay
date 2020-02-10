@@ -1,5 +1,5 @@
 {
-  "name": "capacitor-alipay",
+  "name": "cap-alipay",
   "version": "0.0.1",
   "description": "capacitor plugin for alipay",
   "main": "dist/esm/index.js",
@@ -42,9 +42,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jing-zhou/capacitor-alipay.git"
+    "url": "https://github.com/jing-zhou/cap-alipay.git"
   },
   "bugs": {
-    "url": "https://github.com/jing-zhou/capacitor-alipay.git/issues"
+    "url": "https://github.com/jing-zhou/cap-alipay.git/issues"
   }
 }
