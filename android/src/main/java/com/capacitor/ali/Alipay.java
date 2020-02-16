@@ -25,7 +25,7 @@ public class Alipay extends Plugin {
 
         saveCall(call);
 
-        final Runnable payRunnable = new Runnable() {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -48,9 +48,7 @@ public class Alipay extends Plugin {
 
                 savedCall.reject(state);
             }
-        };
-
-        new Thread(payRunnable).start();
+        }).start();
 
     }
 
