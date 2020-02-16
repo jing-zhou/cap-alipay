@@ -8,9 +8,6 @@ import com.getcapacitor.PluginMethod;
 import com.alipay.sdk.app.PayTask;
 
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
 
 @NativePlugin()
 public class Alipay extends Plugin {
@@ -25,32 +22,35 @@ public class Alipay extends Plugin {
             call.reject(nobill);
             return;
         }
-        final String bstr = call.getString(bill);
 
-        CompletableFuture<Map<String, String>> future = CompletableFuture.supplyAsync(new Supplier<Map<String, String>>() {
+        saveCall(call);
+
+        final Runnable payRunnable = new Runnable() {
+
             @Override
-            public Map<String, String> get() {
-                return (new PayTask(getActivity()).payV2(bstr, true));
-            }
-        });
-
-        try {
-            Map<String, String> res = future.get();
-            String state = res.get(status);
-            if (success.equals(state)) {
-                JSObject ret = new JSObject();
-                for (Map.Entry<String, String> e : res.entrySet()) {
-                    ret.put(e.getKey(), e.getValue());
+            public void run() {
+                // Get the previously saved call
+                PluginCall savedCall = getSavedCall();
+                if (savedCall == null) {
+                    return;
                 }
-                call.resolve(ret);
-                return;
+
+                Map<String, String> res = new PayTask(getActivity()).payV2(savedCall.getString(bill), true);
+                String state = res.get(status);
+                if (success.equals(state)) {
+                    JSObject ret = new JSObject();
+                    for (Map.Entry<String, String> e : res.entrySet()) {
+                        ret.put(e.getKey(), e.getValue());
+                    }
+                    savedCall.resolve(ret);
+                    return;
+                }
+
+                savedCall.reject(state);
             }
+        };
 
-            call.reject(state);
-        } catch (ExecutionException | InterruptedException e) {
-            call.reject(e.getMessage());
-
-        }
+        new Thread(payRunnable).start();
 
     }
 
