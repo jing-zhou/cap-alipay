@@ -23,7 +23,7 @@ public class Alipay extends Plugin {
     private static final String nobill = "Must provide the bill string";
 
     // not a perfect solution
-    private static PluginCall myCall;
+    private PluginCall myCall;
 
     // https://stackoverflow.com/questions/11407943/this-handler-class-should-be-static-or-leaks-might-occur-incominghandler
     //static inner class doesn't hold an implicit reference to the outer class
@@ -39,8 +39,9 @@ public class Alipay extends Plugin {
         public void handleMessage(Message msg) {
             Alipay alipay = alipayWeakReferencee.get();
             if (alipay != null) {
+                PluginCall ca = alipay.myCall;
                 if (apay == msg.what) {
-                    if (myCall == null) {
+                    if (ca == null) {
                         return;
                     }
                     @SuppressWarnings("unchecked")
@@ -51,11 +52,11 @@ public class Alipay extends Plugin {
                         for (Map.Entry<String, String> e : res.entrySet()) {
                             ret.put(e.getKey(), e.getValue());
                         }
-                        myCall.resolve(ret);
+                        ca.resolve(ret);
                         return;
                     }
 
-                    myCall.reject(state);
+                    ca.reject(state);
 
                 }
             }
