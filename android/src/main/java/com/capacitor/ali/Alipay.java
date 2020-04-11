@@ -91,6 +91,8 @@ public class Alipay extends Plugin {
                                     ret.put(e.getKey(), e.getValue());
                                 }
                                 call.resolve(ret);
+                            } else {
+                                call.reject(state);
                             }
                         }
                     }
