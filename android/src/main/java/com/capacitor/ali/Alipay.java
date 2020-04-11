@@ -19,13 +19,13 @@ import java.util.Map;
 public class Alipay extends Plugin {
     private static final int apay = 101;
     private static final String bill = "bill";
-    private static final String result = "res";
-    private static final String callObj = "call";
+    private static final String id = "callId";
     private static final String status = "resultStatus";
     private static final String success = "9000";
     private static final String nobill = "Must provide the bill string";
 
-    private  MyHandler _handler;
+    private MyHandler _handler;
+    private Map<String, PluginCall> _calls;
 
     @SuppressWarnings("unused")
     @PluginMethod()
@@ -40,14 +40,21 @@ public class Alipay extends Plugin {
         new Thread(() -> {
             Message msg = new Message();
             msg.what = apay;
-            Map<String, Object> map = new HashMap<>();
-            map.put(callObj, call);
-            map.put(result, new PayTask(getActivity()).payV2(bstr, true));
-            msg.obj = map;
+            String callId = call.getCallbackId();
+            calls().put(callId, call);
+            Map<String, String> res = new PayTask(getActivity()).payV2(bstr, true);
+            res.put(id, callId);
+            msg.obj = res;
             hanlder().sendMessage(msg);
-
         }).start();
 
+    }
+
+    private Map<String, PluginCall> calls() {
+        if (_calls == null) {
+            _calls = new HashMap<>();
+        }
+        return _calls;
     }
 
     private MyHandler hanlder() {
@@ -72,25 +79,21 @@ public class Alipay extends Plugin {
             Alipay alipay = alipayWeakReferencee.get();
             if (alipay != null) {
                 if (apay == msg.what) {
-                    Map<String, Object> map = ((Map) msg.obj);
-                    PluginCall call = (PluginCall) map.get(callObj);
-                    if (call == null) {
-                        return;
-                    }
-                    @SuppressWarnings("unchecked")
-                    Map<String, String> res = (Map<String, String>) map.get(result);
-                    String state = res.get(status);
-                    if (success.equals(state)) {
-                        JSObject ret = new JSObject();
-                        for (Map.Entry<String, String> e : res.entrySet()) {
-                            ret.put(e.getKey(), e.getValue());
+                    Map<String, String> res = (Map<String, String>) msg.obj;
+                    String callId = res.remove(id);
+                    if (callId != null) {
+                        PluginCall call = alipay.calls().remove(callId);
+                        if (call != null) {
+                            String state = res.get(status);
+                            if (success.equals(state)) {
+                                JSObject ret = new JSObject();
+                                for (Map.Entry<String, String> e : res.entrySet()) {
+                                    ret.put(e.getKey(), e.getValue());
+                                }
+                                call.resolve(ret);
+                            }
                         }
-                        call.resolve(ret);
-                        return;
                     }
-
-                    call.reject(state);
-
                 }
             }
         }
