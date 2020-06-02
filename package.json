@@ -13,13 +13,13 @@
   "author": "jing-zhou",
   "license": "MIT",
   "dependencies": {
-    "@capacitor/core": "^2.1.0"
+    "@capacitor/core": "^2.1.2"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",
     "typescript": "^3.8.3",
-    "@capacitor/ios": "^2.1.0",
-    "@capacitor/android": "^2.1.0"
+    "@capacitor/ios": "^2.1.2",
+    "@capacitor/android": "^2.1.2"
   },
   "files": [
     "dist/",
