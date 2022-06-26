@@ -5,30 +5,30 @@ import android.os.Message;
 
 import com.alipay.sdk.app.PayTask;
 import com.getcapacitor.JSObject;
-import com.getcapacitor.NativePlugin;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
+import com.getcapacitor.annotation.CapacitorPlugin;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-@NativePlugin()
+@CapacitorPlugin(name = "Alipay")
 public class Alipay extends Plugin {
     private static final int apay = 101;
     private static final String bill = "bill";
     private static final String id = "callId";
     private static final String status = "resultStatus";
     private static final String success = "9000";
-    private static final String nobill = "Must provide the bill string";
+    private static final String nobill = "no valid bill string";
 
     private MyHandler _handler;
     private Map<String, PluginCall> _calls;
 
     @SuppressWarnings("unused")
-    @PluginMethod()
+    @PluginMethod
     public void pay(final PluginCall call) {
         if (!call.getData().has(bill)) {
             call.reject(nobill);
