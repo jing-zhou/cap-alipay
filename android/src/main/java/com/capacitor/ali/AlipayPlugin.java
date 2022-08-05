@@ -16,7 +16,7 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 @CapacitorPlugin(name = "Alipay")
-public class Alipay extends Plugin {
+public class AlipayPlugin extends Plugin {
     private static final int apay = 101;
     private static final String bill = "bill";
     private static final String id = "callId";
@@ -68,15 +68,15 @@ public class Alipay extends Plugin {
     //static inner class doesn't hold an implicit reference to the outer class
     private static class MyHandler extends Handler {
         //Using a weak reference means you won't prevent garbage collection
-        private final WeakReference<Alipay> alipayWeakReferencee;
+        private final WeakReference<AlipayPlugin> alipayWeakReferencee;
 
-        MyHandler(Alipay myClassInstance) {
+        MyHandler(AlipayPlugin myClassInstance) {
             alipayWeakReferencee = new WeakReference<>(myClassInstance);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            Alipay alipay = alipayWeakReferencee.get();
+            AlipayPlugin alipay = alipayWeakReferencee.get();
             if (alipay != null) {
                 if (apay == msg.what) {
                     Map<String, String> res = (Map<String, String>) msg.obj;
