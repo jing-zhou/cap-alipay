@@ -1,6 +1,6 @@
 {
   "name": "cap-alipay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "capacitor plugin for alipay",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
