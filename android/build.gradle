@@ -45,9 +45,9 @@ android {
 repositories {
     google()
     mavenCentral()
-    flatDir {
-        dirs 'src/main/libs'
-    }
+    // flatDir {
+    //    dirs 'src/main/libs'
+    //}
 }
 
 dependencies {
@@ -58,6 +58,9 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
-    implementation(name:'alipaySdk-15.6.8-20191021122514', ext:'aar')
+    // implementation(name:'alipaySdk-15.6.8-20191021122514', ext:'aar')
+    // https://mvnrepository.com/artifact/com.alipay.sdk/alipaysdk-android
+    implementation group: 'com.alipay.sdk', name: 'alipaysdk-android', version: '15.8.17'
+
 }
 
